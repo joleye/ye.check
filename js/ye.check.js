@@ -5,7 +5,7 @@
 
 var ye,JoleYe = ye = {};
 
-ye.browser = {}
+ye.browser = {};
 if (/msie (\d+\.\d)/i.test(navigator.userAgent)) {
     //IE 8下，以documentMode为准
 	ye.browser.ie = document.documentMode || + RegExp['\x241'];
@@ -34,7 +34,7 @@ ye.css = function(o,data){
 ye.setAttr = function(d,key,data){
 	if(typeof data=='undefined'){
 		for(var k in key){
-			var k1 = JoleYe._NAME_ATTR(k);
+			var k1 = ye._NAME_ATTR(k);
 			d.setAttribute(k1,key[k]);
 		}
 	}else{
@@ -53,7 +53,7 @@ ye.setAttr = function(d,key,data){
 					d.setAttribute(key,data);
 			}
 			else
-				d.setAttribute(key,data)
+				d.setAttribute(key,data);
 		}
 	}
 };
@@ -62,13 +62,13 @@ ye.setAttr = function(d,key,data){
 ye.getAttr = function(d,key){
 	if(!d) return;
 	d = this.g(d);
-	key = JoleYe._NAME_ATTR(key);
+	key = ye._NAME_ATTR(key);
 	
 	if(/INPUT|FORM/.test(d.nodeName))
 		if(typeof(d.getAttribute(key))=='object'){
 			var dom = d.attributes[key];
 			if(dom)
-				return d.attributes[key].value
+				return d.attributes[key].value;
 			else
 				return d.getAttribute(key)	;
 		}
@@ -101,7 +101,7 @@ ye._NAME_ATTR = function(key){
    }
 	
 	return _NAME[key] || key;
-}
+};
 
 ye.check = function(c,id){
 	if ( window == this ) return new ye.check(d,id);
