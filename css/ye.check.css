@@ -1,0 +1,12 @@
+.derr {
+    background: url("../images/form_check.png") no-repeat scroll 0 -34px;
+    color: #FF0000;
+    margin: 0 0 0 4px;
+    padding: 5px 0 5px 20px;
+}
+.dright {
+    background: url("../images/form_check.png") no-repeat scroll 0 -6px;
+    color: #333333;
+    margin: 0 0 0 4px;
+    padding: 5px 0 5px 20px;
+}
