@@ -8,7 +8,25 @@ if (/msie (\d+\.\d)/i.test(navigator.userAgent)) {
 
 JoleYe.browser.firefox = /FireFox/i.test(navigator.userAgent);
 
-JoleYe.g = function(tag){return typeof(tag)=='string'?document.getElementById(tag):tag;}
+JoleYe.g = function(tag){
+	this.find(tag);
+	return this._d;
+};
+
+JoleYe.find = function(seltext){
+	if(typeof(tag)=='string'){
+		if(/^(#)(\w|_|-)/.test(seltext)){
+			this._d = JoleYe.g(seltext.substring(1));
+		}
+		if(/^.(\w|_|-)/.test(seltext)){
+			this._d = JoleYe.g(seltext.substring(1));
+		}
+	}
+	else
+		this._d = tag;
+			
+	return this;
+};
 
 JoleYe.done = function(event){
 	e = event ? event : window.event;
@@ -37,18 +55,7 @@ JoleYe.getEvent = function() {
 		func=func.caller;
 	}
 	return null;
-}
-
-JoleYe.find = function(seltext){
-		if(/^(#)(\w|_|-)/.test(seltext)){
-				this._d = JoleYe.g(seltext.substring(1));
-		}
-		if(/^.(\w|_|-)/.test(seltext)){
-				this._d = JoleYe.g(seltext.substring(1));
-		}
-		
-		return this;
-}
+};
 
 JoleYe.d = function(func){
 	func.apply(this._d);

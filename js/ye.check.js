@@ -14,7 +14,25 @@ if (/msie (\d+\.\d)/i.test(navigator.userAgent)) {
 
 ye.browser.firefox = /FireFox/i.test(navigator.userAgent);
 
-ye.g = function(tag){return typeof(tag)=='string'?document.getElementById(tag):tag;};
+ye.g = function(tag){
+	this.find(tag);
+	return this._d;
+};
+
+ye.find = function(seltext){
+	if(typeof(tag)=='string'){
+		if(/^(#)(\w|_|-)/.test(seltext)){
+			this._d = ye.g(seltext.substring(1));
+		}
+		if(/^.(\w|_|-)/.test(seltext)){
+			this._d = ye.g(seltext.substring(1));
+		}
+	}
+	else
+		this._d = tag;
+			
+	return this;
+};
 
 /*创建dom对象*/
 ye.create = function(tag){
@@ -103,8 +121,35 @@ ye._NAME_ATTR = function(key){
 	return _NAME[key] || key;
 };
 
+/*读取默认的规则*/
+ye.get_def_rule = function (form) {
+    var rule = {};
+    $(form).find('input,textarea,select').each(function () {
+        var id = this.id;
+        var rule_method = $(this).attr('check-rule');
+        
+        if (rule_method == "radio")
+            id = this.name;
+
+        if (rule_method && id) {
+            var warning = $(this).attr('check-warning');
+            var correct = $(this).attr('check-correct');
+            rule[id] = [rule_method, warning, correct];
+        }
+    });
+    console.log(rule);
+    return rule;
+};
+
 ye.check = function(c,id){
 	if ( window == this ) return new ye.check(d,id);
+	var _dom = ye.g(id);
+	return this.init(c,_dom);
+};
+
+/*全自动托管*/
+ye.verify = function(id){
+	var c = this.get_def_rule(id);
 	var _dom = ye.g(id);
 	return this.init(c,_dom);
 };
