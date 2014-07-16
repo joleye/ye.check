@@ -20,16 +20,17 @@ ye.g = function(tag){
 };
 
 ye.find = function(seltext){
-	if(typeof(tag)=='string'){
+	if(typeof(seltext)=='string'){
 		if(/^(#)(\w|_|-)/.test(seltext)){
-			this._d = ye.g(seltext.substring(1));
+			this._d = document.getElementById(seltext.substring(1));
+		}else if(/^\.[\w_\-]+$/.test(seltext)){
+			this._d = document.getElementById(seltext.substring(1));
 		}
-		if(/^.(\w|_|-)/.test(seltext)){
-			this._d = ye.g(seltext.substring(1));
-		}
+		else
+			this._d = document.getElementById(seltext);
 	}
 	else
-		this._d = tag;
+		this._d = seltext;
 			
 	return this;
 };
@@ -134,7 +135,7 @@ ye.get_def_rule = function (form) {
         if (rule_method && id) {
             var warning = $(this).attr('check-warning');
             var correct = $(this).attr('check-correct');
-            rule[id] = [rule_method, warning, correct];
+            rule[id] = [rule_method, warning, correct?correct:''];
         }
     });
     console.log(rule);
@@ -189,7 +190,7 @@ ye.do_post = function(option){
 			var action = $(subdom).attr('action');
 			$.post(action,$(subdom).serialize(),function(env){
 				ye.g(option.btn.name).disabled = false;
-				option.success(env);
+				option.success.call(this,env);
 			});
 		}
 		else{
@@ -204,8 +205,17 @@ ye.do_post = function(option){
 
 ye._task_key  = function(k){
 	var val = this.conf[k];
-
-	eval('var ret = ye._'+val[0]+'("'+k+'")');
+	
+	//兼容easyui问题
+	//
+	
+	var ret = false;
+	if($('#'+k).hasClass('combo-f')){
+		var k2 = $(this._dom).find('*[name='+k+']')[0];
+		ret = ye['_'+val[0]](k2);
+	}
+	else
+		ret = ye['_'+val[0]](k);
 	
 	var option = this._option;
 	var d = ye.g(k+'_msg');
@@ -245,7 +255,7 @@ ye._task_key  = function(k){
 
 /*在开头字母为@的时候当变量处理*/
 ye._task_var = function(k){
-	if(k.indexOf('@')==0){
+	if(typeof k!='undefined' && k.indexOf('@')==0){
 		var val = k.substring(1);
 		var ret = "";
 		eval('ret='+val);
@@ -291,6 +301,9 @@ ye._date = function(id){
 
 /*必填字段*/
 ye._require = function(id){
+	var r = ye.g(id);
+	console.log(ye.g(id));
+	
 	var d = ye.g(id).value;
 	return d=='' ? false : true;
 };

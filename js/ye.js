@@ -8,22 +8,23 @@ if (/msie (\d+\.\d)/i.test(navigator.userAgent)) {
 
 JoleYe.browser.firefox = /FireFox/i.test(navigator.userAgent);
 
-JoleYe.g = function(tag){
+ye.g = function(tag){
 	this.find(tag);
 	return this._d;
 };
 
-JoleYe.find = function(seltext){
-	if(typeof(tag)=='string'){
+ye.find = function(seltext){
+	if(typeof(seltext)=='string'){
 		if(/^(#)(\w|_|-)/.test(seltext)){
-			this._d = JoleYe.g(seltext.substring(1));
+			this._d = document.getElementById(seltext.substring(1));
+		}else if(/^\.[\w_\-]+$/.test(seltext)){
+			this._d = document.getElementById(seltext.substring(1));
 		}
-		if(/^.(\w|_|-)/.test(seltext)){
-			this._d = JoleYe.g(seltext.substring(1));
-		}
+		else
+			this._d = document.getElementById(seltext);
 	}
 	else
-		this._d = tag;
+		this._d = seltext;
 			
 	return this;
 };
