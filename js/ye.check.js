@@ -175,7 +175,11 @@ ye.do_post = function(option){
 	}
 	else{
 		if(typeof option.btn!='undefined'){
-			ye.g(option.btn.name).value = option.btn.text;
+			if(ye.g(option.btn.name).nodeName.toUpperCase()=='BUTTON')
+				$(option.btn.name).html(option.btn.text);
+			else
+				$(option.btn.name).val(option.btn.text);
+			
 			ye.g(option.btn.name).disabled = true;
 		}
 		
@@ -207,8 +211,6 @@ ye._task_key  = function(k){
 	var val = this.conf[k];
 	
 	//兼容easyui问题
-	//
-	
 	var ret = false;
 	if($('#'+k).hasClass('combo-f')){
 		var k2 = $(this._dom).find('*[name='+k+']')[0];
