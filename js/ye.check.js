@@ -24,7 +24,7 @@ ye.find = function(seltext){
 		if(/^(#)(\w|_|-)/.test(seltext)){
 			this._d = document.getElementById(seltext.substring(1));
 		}else if(/^\.[\w_\-]+$/.test(seltext)){
-			this._d = document.getElementById(seltext.substring(1));
+			this._d = $(seltext)[0];
 		}
 		else
 			this._d = document.getElementById(seltext);
@@ -138,7 +138,6 @@ ye.get_def_rule = function (form) {
             rule[id] = [rule_method, warning, correct?correct:''];
         }
     });
-    console.log(rule);
     return rule;
 };
 
