@@ -97,6 +97,13 @@ ye.getAttr = function(d,key){
 		return d.getAttribute(key)	;
 };
 
+/*绑定方法*/
+ye.extend = function(options){
+	for(var func in options){
+		this['_'+func] = options[func];
+	}
+};
+
 /**
  * 对象属性设置
  *  ie6,7下class转换
@@ -132,10 +139,16 @@ ye.get_def_rule = function (form) {
         if (rule_method == "radio")
             id = this.name;
 
-        if (rule_method && id) {
-            var warning = $(this).attr('check-warning');
-            var correct = $(this).attr('check-correct');
-            rule[id] = [rule_method, warning, correct?correct:''];
+        var warning = $(this).attr('check-warning');
+        var correct = $(this).attr('check-correct');
+        
+        if (rule_method && id)
+            rule[id] = [rule_method, warning,  correct?correct:''];
+        else if(rule_method){
+            var date = new Date();
+            var tmpid = this.name + date.getTime();
+            $(this).attr('id', tmpid);
+            rule[tmpid] = [rule_method, warning, correct?correct:''];
         }
     });
     return rule;
@@ -211,12 +224,14 @@ ye._task_key  = function(k){
 	
 	//兼容easyui问题
 	var ret = false;
-	if($('#'+k).hasClass('combo-f')){
-		var k2 = $(this._dom).find('*[name='+k+']')[0];
-		ret = ye['_'+val[0]](k2);
+	if(val[0] && $('#'+k).hasClass('combo-f')){
+		var _jd = $(this._dom).find('*[name='+k+']');
+		var k2 = _jd[0];
+		ret = ye['_'+val[0]](k2,_jd.val());
 	}
-	else
-		ret = ye['_'+val[0]](k);
+	else if(val[0]){
+		ret = ye['_'+val[0]](k,$('#'+k).val());
+	}
 	
 	var option = this._option;
 	var d = ye.g(k+'_msg');
@@ -227,10 +242,18 @@ ye._task_key  = function(k){
 		var msgdom;
 		if(ye.g(k))
 			msgdom = ye.g(k);
-		else
+		else if(this._option.form)
 			msgdom = $(this._option.form).find('*[name='+k+']')[0];
+		else
+			msgdom = $(this._dom).find('*[name='+k+']')[0];
 		
-		msgdom.parentNode.parentNode.appendChild(cd);
+		if(msgdom && msgdom.parentNode && msgdom.parentNode.parentNode)
+			msgdom.parentNode.parentNode.appendChild(cd);
+		else{
+			console.log(msgdom);
+			msgdom.parentNode.appendChild(cd);
+		}
+			
 		
 		d = ye.g(k+'_msg');
 	}
@@ -303,8 +326,6 @@ ye._date = function(id){
 /*必填字段*/
 ye._require = function(id){
 	var r = ye.g(id);
-	console.log(ye.g(id));
-	
 	var d = ye.g(id).value;
 	return d=='' ? false : true;
 };
