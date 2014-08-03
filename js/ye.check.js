@@ -1,6 +1,7 @@
 /**
- * 表单验证控件
+ * 表单验证控件 0.5
  * @author joleye
+ * https://github.com/joleye/ye.check
  */
 
 var ye,JoleYe = ye = {};
@@ -206,7 +207,7 @@ ye.do_post = function(option){
 			var action = $(subdom).attr('action');
 			$.post(action,$(subdom).serialize(),function(env){
 				ye.g(option.btn.name).disabled = false;
-				option.success.call(this,env);
+				option.success && option.success.call(this,env);
 			});
 		}
 		else{
