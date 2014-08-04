@@ -174,6 +174,20 @@ ye.init = function(c,dom){
 	return this;
 };
 
+ye.do_validate = function(option){
+	var conf = this.conf;
+	var err = false;
+	this._option = option;
+	for(var k in conf){
+		var f = this._task_key(k);
+		if(f) err = true;
+	}
+	if(err){
+		alert('信息填写格式错误或不完整，请检查红色标记部分');return false;
+	}
+	return true;
+};
+
 /*新验证提交*/
 ye.do_post = function(option){
 	var conf = this.conf;
@@ -304,6 +318,14 @@ ye.do_blur = function(option){
 	}
 };
 
+ye.do_keyup = function(option){
+	this._option = option;
+	for(var k in this.conf){
+		ye.g(k).onkeyup = function(){//绑定onkeyup函数
+			ye._do_blur(this.id);
+		};
+	}
+};
 
 /*手机号码验证*/
 ye._mobile = function(id){
@@ -326,7 +348,6 @@ ye._date = function(id){
 
 /*必填字段*/
 ye._require = function(id){
-	var r = ye.g(id);
 	var d = ye.g(id).value;
 	return d=='' ? false : true;
 };
@@ -403,6 +424,7 @@ ye._age = function(id){
 
 /*IP验证*/
 ye._ip = function(id){
-	var d = ye.g(id).value;
-	return /^((?:(?:25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d)))\.){3}(?:25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d))))$/.test(d);
+	var ip = ye.g(id).value;
+	var ipRegex = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
+	return ipRegex.test(ip);
 };
