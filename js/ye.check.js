@@ -205,6 +205,8 @@ ye.do_post = function(option){
 		
 		if(option.method == 'ajax'){
 			var action = $(subdom).attr('action');
+			if(action==null || action=='')
+				action = location.href;
 			$.post(action,$(subdom).serialize(),function(env){
 				ye.g(option.btn.name).disabled = false;
 				option.success && option.success.call(this,env);
