@@ -188,10 +188,14 @@ ye.do_post = function(option){
 	}
 	else{
 		if(typeof option.btn!='undefined'){
-			if(ye.g(option.btn.name).nodeName.toUpperCase()=='BUTTON')
+			if(ye.g(option.btn.name).nodeName.toUpperCase()=='BUTTON'){
+				option.btn.original = $(option.btn.name).html(); 
 				$(option.btn.name).html(option.btn.text);
-			else
+			}
+			else{
+				option.btn.original = $(option.btn.name).val();
 				$(option.btn.name).val(option.btn.text);
+			}
 			
 			ye.g(option.btn.name).disabled = true;
 		}
@@ -209,6 +213,10 @@ ye.do_post = function(option){
 				action = location.href;
 			$.post(action,$(subdom).serialize(),function(env){
 				ye.g(option.btn.name).disabled = false;
+				if(ye.g(option.btn.name).nodeName.toUpperCase()=='BUTTON')
+					ye.g(option.btn.name).innerHTML = option.btn.original;
+				else
+					ye.g(option.btn.name).value = option.btn.original;
 				option.success && option.success.call(this,env);
 			});
 		}
