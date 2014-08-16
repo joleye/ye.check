@@ -24,10 +24,9 @@ ye.find = function(seltext){
 	if(typeof(seltext)=='string'){
 		if(/^(#)(\w|_|-)/.test(seltext)){
 			this._d = document.getElementById(seltext.substring(1));
-		}else if(/^\.[\w_\-]+$/.test(seltext)){
+		}else if(/^\.[\w_\-]+$|\[/.test(seltext)){
 			this._d = $(seltext)[0];
-		}
-		else
+		}else
 			this._d = document.getElementById(seltext);
 	}
 	else
@@ -147,7 +146,7 @@ ye.get_def_rule = function (form) {
             rule[id] = [rule_method, warning,  correct?correct:''];
         else if(rule_method){
             var date = new Date();
-            var tmpid = this.name + date.getTime();
+            var tmpid = this.name + date.getTime() + Math.round(Math.random() * 100000);
             $(this).attr('id', tmpid);
             rule[tmpid] = [rule_method, warning, correct?correct:''];
         }
@@ -162,10 +161,11 @@ ye.check = function(c,id){
 };
 
 /*全自动托管*/
-ye.verify = function(id){
+ye.verify = function(id,option){
 	var c = this.get_def_rule(id);
+	var nc = $.extend(c,option);
 	var _dom = ye.g(id);
-	return this.init(c,_dom);
+	return this.init(nc,_dom);
 };
 
 ye.init = function(c,dom){
@@ -245,11 +245,13 @@ ye._task_key  = function(k){
 		ret = ye['_'+val[0]](k2,_jd.val());
 	}
 	else if(val[0]){
-		ret = ye['_'+val[0]](k,$('#'+k).val());
+		var tar_val = $('#'+k).length>0?$('#'+k).val():$(k).val();
+		ret = ye['_'+val[0]](k,tar_val);
 	}
 	
 	var option = this._option;
-	var d = ye.g(k+'_msg');
+	
+	var d = ye.g(this._format_key(k)+'_msg');
 	if(!d){
 		var cd = ye.create("label");
 		cd.id = k+'_msg';
@@ -265,7 +267,6 @@ ye._task_key  = function(k){
 		if(msgdom && msgdom.parentNode && msgdom.parentNode.parentNode)
 			msgdom.parentNode.parentNode.appendChild(cd);
 		else{
-			console.log(msgdom);
 			msgdom.parentNode.appendChild(cd);
 		}
 			
@@ -290,6 +291,14 @@ ye._task_key  = function(k){
 		});
 		return true;
 	}
+};
+
+/*格式化key*/
+ye._format_key = function(k){
+	if(/\[name\=\w+\]/.test(k)){
+		return /\[name=\w+\]/.exec(k)[0].replace('[name=','').replace(']','');
+	}else
+		return k;
 };
 
 /*在开头字母为@的时候当变量处理*/
@@ -347,9 +356,9 @@ ye._date = function(id){
 };
 
 /*必填字段*/
-ye._require = function(id){
-	var d = ye.g(id).value;
-	return d=='' ? false : true;
+ye._require = function(id,val){
+	var ret = val && val!='' ? true : false;
+	return ret;
 };
 
 /*必填字段 默认为0情况*/
