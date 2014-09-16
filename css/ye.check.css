@@ -10,3 +10,14 @@
     margin: 0 0 0 4px;
     padding: 5px 0 5px 20px;
 }
+
+/*compositebox*/
+.icon-compositebox{
+	background:url("../images/compositebox.png") no-repeat;
+	border:none;
+	width:15px;height:15px;
+	display:inline-block;
+}
+
+.icon-compositebox.checked{background-position: 0 -15px;}
+.icon-compositebox.del{background-position: 0 -30px;}

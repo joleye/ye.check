@@ -35,6 +35,33 @@ ye.find = function(seltext){
 	return this;
 };
 
+/*数组对象*/
+ye.array = function(arr){
+	this._data_arr = arr;
+	return this;
+};
+
+/*数组所在位置索引号*/
+ye.index = function(val){
+	for(var i=0;i<this._data_arr.length;i++){
+		if(this._data_arr[i] == val){
+			return i;
+		}
+	}
+	return -1;
+};
+
+/*取当前下一个内容*/
+ye.next = function(val){
+	for(var i=0;i<this._data_arr.length;i++){
+		if(this._data_arr[i] == val){
+			if(i+1<this._data_arr.length)
+				return this._data_arr[i+1];
+		}
+	}
+	return this._data_arr[0];
+};
+
 /*创建dom对象*/
 ye.create = function(tag){
 	return document.createElement(tag);	
