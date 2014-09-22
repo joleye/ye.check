@@ -249,6 +249,8 @@ ye.do_post = function(option){
 			$.post(action,$(subdom).serialize(),function(env){
 				ye.g(option.btn.name).disabled = false;
 				option.success && option.success.call(this,env);
+			}).failed(function(xhr){
+				option.failed && option.failed.call(this,xhr);
 			});
 		}
 		else{
