@@ -24,16 +24,42 @@ ye.find = function(seltext){
 	if(typeof(seltext)=='string'){
 		if(/^(#)(\w|_|-)/.test(seltext)){
 			this._d = document.getElementById(seltext.substring(1));
-		}else if(/^\.[\w_\-]+$/.test(seltext)){
+		}else if(/^\.[\w_\-]+$|\[/.test(seltext)){
 			this._d = $(seltext)[0];
-		}
-		else
+		}else
 			this._d = document.getElementById(seltext);
 	}
 	else
 		this._d = seltext;
 			
 	return this;
+};
+
+/*数组对象*/
+ye.array = function(arr){
+	this._data_arr = arr;
+	return this;
+};
+
+/*数组所在位置索引号*/
+ye.index = function(val){
+	for(var i=0;i<this._data_arr.length;i++){
+		if(this._data_arr[i] == val){
+			return i;
+		}
+	}
+	return -1;
+};
+
+/*取当前下一个内容*/
+ye.next = function(val){
+	for(var i=0;i<this._data_arr.length;i++){
+		if(this._data_arr[i] == val){
+			if(i+1<this._data_arr.length)
+				return this._data_arr[i+1];
+		}
+	}
+	return this._data_arr[0];
 };
 
 /*创建dom对象*/
@@ -147,7 +173,7 @@ ye.get_def_rule = function (form) {
             rule[id] = [rule_method, warning,  correct?correct:''];
         else if(rule_method){
             var date = new Date();
-            var tmpid = this.name + date.getTime();
+            var tmpid = this.name + date.getTime() + Math.round(Math.random() * 100000);
             $(this).attr('id', tmpid);
             rule[tmpid] = [rule_method, warning, correct?correct:''];
         }
@@ -162,16 +188,31 @@ ye.check = function(c,id){
 };
 
 /*全自动托管*/
-ye.verify = function(id){
+ye.verify = function(id,option){
 	var c = this.get_def_rule(id);
+	var nc = $.extend(c,option);
 	var _dom = ye.g(id);
-	return this.init(c,_dom);
+	return this.init(nc,_dom);
 };
 
 ye.init = function(c,dom){
 	this.conf = c;
 	this._dom = dom;
 	return this;
+};
+
+ye.do_validate = function(option){
+	var conf = this.conf;
+	var err = false;
+	this._option = option;
+	for(var k in conf){
+		var f = this._task_key(k);
+		if(f) err = true;
+	}
+	if(err){
+		alert('信息填写格式错误或不完整，请检查红色标记部分');return false;
+	}
+	return true;
 };
 
 /*新验证提交*/
@@ -218,6 +259,8 @@ ye.do_post = function(option){
 				else
 					ye.g(option.btn.name).value = option.btn.original;
 				option.success && option.success.call(this,env);
+			}).failed(function(xhr){
+				option.failed && option.failed.call(this,xhr);
 			});
 		}
 		else{
@@ -241,11 +284,13 @@ ye._task_key  = function(k){
 		ret = ye['_'+val[0]](k2,_jd.val());
 	}
 	else if(val[0]){
-		ret = ye['_'+val[0]](k,$('#'+k).val());
+		var tar_val = $('#'+k).length>0?$('#'+k).val():$(k).val();
+		ret = ye['_'+val[0]](k,tar_val);
 	}
 	
 	var option = this._option;
-	var d = ye.g(k+'_msg');
+	
+	var d = ye.g(this._format_key(k)+'_msg');
 	if(!d){
 		var cd = ye.create("label");
 		cd.id = k+'_msg';
@@ -261,7 +306,6 @@ ye._task_key  = function(k){
 		if(msgdom && msgdom.parentNode && msgdom.parentNode.parentNode)
 			msgdom.parentNode.parentNode.appendChild(cd);
 		else{
-			console.log(msgdom);
 			msgdom.parentNode.appendChild(cd);
 		}
 			
@@ -286,6 +330,14 @@ ye._task_key  = function(k){
 		});
 		return true;
 	}
+};
+
+/*格式化key*/
+ye._format_key = function(k){
+	if(/\[name\=\w+\]/.test(k)){
+		return /\[name=\w+\]/.exec(k)[0].replace('[name=','').replace(']','');
+	}else
+		return k;
 };
 
 /*在开头字母为@的时候当变量处理*/
@@ -314,6 +366,14 @@ ye.do_blur = function(option){
 	}
 };
 
+ye.do_keyup = function(option){
+	this._option = option;
+	for(var k in this.conf){
+		ye.g(k).onkeyup = function(){//绑定onkeyup函数
+			ye._do_blur(this.id);
+		};
+	}
+};
 
 /*手机号码验证*/
 ye._mobile = function(id){
@@ -335,10 +395,9 @@ ye._date = function(id){
 };
 
 /*必填字段*/
-ye._require = function(id){
-	var r = ye.g(id);
-	var d = ye.g(id).value;
-	return d=='' ? false : true;
+ye._require = function(id,val){
+	var ret = val && val!='' ? true : false;
+	return ret;
 };
 
 /*必填字段 默认为0情况*/
@@ -413,6 +472,7 @@ ye._age = function(id){
 
 /*IP验证*/
 ye._ip = function(id){
-	var d = ye.g(id).value;
-	return /^((?:(?:25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d)))\.){3}(?:25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d))))$/.test(d);
+	var ip = ye.g(id).value;
+	var ipRegex = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
+	return ipRegex.test(ip);
 };
