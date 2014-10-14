@@ -3,7 +3,8 @@
  * @author joleye
  * https://github.com/joleye/ye.check
  */
-
+ 
+if(!ye)
 var ye,JoleYe = ye = {};
 
 ye.browser = {};
@@ -259,7 +260,7 @@ ye.do_post = function(option){
 				else
 					ye.g(option.btn.name).value = option.btn.original;
 				option.success && option.success.call(this,env);
-			}).failed(function(xhr){
+			}).fail(function(xhr){
 				option.failed && option.failed.call(this,xhr);
 			});
 		}
