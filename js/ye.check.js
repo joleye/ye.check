@@ -3,7 +3,8 @@
  * @author joleye
  * https://github.com/joleye/ye.check
  */
-
+ 
+if(!ye)
 var ye,JoleYe = ye = {};
 
 ye.browser = {};
