@@ -361,9 +361,15 @@ ye._do_blur = function(d){
 ye.do_blur = function(option){
 	this._option = option;
 	for(var k in this.conf){
-		ye.g(k).onblur = function(){
-			ye._do_blur(this.id);
-		};
+		if(this.conf[k][0]=='radio'){
+			$('input[name='+k+']').on('blur',function(){
+				ye._do_blur(this.id);
+			});
+		}else{
+			ye.g(k).onblur = function(){
+				ye._do_blur(this.id);
+			};	
+		}
 	}
 };
 
