@@ -52,6 +52,14 @@ ye.index = function(val){
 	return -1;
 };
 
+/*对象是否为空*/
+ye.isEmpty = function(arg){
+	if(typeof arg == 'undefined' || arg=='' || arg == null)
+		return true;
+	else
+		return false;
+}
+
 /*取当前下一个内容*/
 ye.next = function(val){
 	for(var i=0;i<this._data_arr.length;i++){
@@ -275,6 +283,9 @@ ye.do_post = function(option){
 };
 
 ye._task_key  = function(k){
+	if(ye.isEmpty(k))
+		return;
+	
 	var val = this.conf[k];
 	
 	//兼容easyui问题
