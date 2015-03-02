@@ -238,13 +238,14 @@ ye.do_post = function(option){
 	}
 	else{
 		if(typeof option.btn!='undefined'){
+			var jbtn = $(ye.g(option.btn.name));
 			if(ye.g(option.btn.name).nodeName.toUpperCase()=='BUTTON'){
-				option.btn.original = $(option.btn.name).html(); 
-				$(option.btn.name).html(option.btn.text);
+				option.btn.original = jbtn.html();
+				jbtn.html(option.btn.text);
 			}
 			else{
-				option.btn.original = $(option.btn.name).val();
-				$(option.btn.name).val(option.btn.text);
+				option.btn.original = jbtn.val();
+				jbtn.val(option.btn.text);
 			}
 			
 			ye.g(option.btn.name).disabled = true;
