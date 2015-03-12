@@ -295,10 +295,14 @@ ye._task_key  = function(k){
 		var _jd = $(this._dom).find('*[name='+k+']');
 		var k2 = _jd[0];
 		ret = ye['_'+val[0]](k2,_jd.val());
-	}
-	else if(val[0]){
+	}else if(val[0]){
 		var tar_val = $('#'+k).length>0?$('#'+k).val():$(k).val();
-		ret = ye['_'+val[0]](k,tar_val);
+		
+		var funs = val[0].split('|');
+		for(var i=0;i<funs.length;i++){
+			if(ret = ye['_'+funs[i]](k,tar_val))
+				break;
+		}
 	}
 	
 	var option = this._option;
@@ -321,7 +325,6 @@ ye._task_key  = function(k){
 		else{
 			msgdom.parentNode.appendChild(cd);
 		}
-			
 		
 		d = ye.g(k+'_msg');
 	}
@@ -495,3 +498,8 @@ ye._ip = function(id){
 	var ipRegex = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
 	return ipRegex.test(ip);
 };
+
+/*空值验证*/
+ye._null = function(id,val){
+	return isEmpty(val);
+}

@@ -44,7 +44,7 @@ span {
 				</span></li>
 				<li><label class="b">年龄：</label> <span><input type="text"	name="age" check-rule="age" check-warning="错误" check-correct="正确" check-conf="{agestart:18,ageend:60}" /></span></li>
 				<li><label class="b">ip：</label> <span><input type="text" name="ip" check-rule="custom" check-warning="@warning" check-correct="@correct" /></span></li>
-				<li><label class="b">&nbsp;</label> <span> <input type="button" id="post" value="提交" onclick="do_post();" />
+				<li><label class="b">&nbsp;</label> <span> <input type="button" id="post" value="提交" onclick="save();" />
 				</span></li>
 		</form>
 	</div>
@@ -69,7 +69,7 @@ span {
 		}
 	});
 	
-	function do_post() {			
+	function save() {			
 		//自动托管
 		ye.verify('#form1').do_post({
 			method : 'ajax',//ajax模式提交

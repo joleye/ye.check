@@ -47,31 +47,33 @@ span {
 				<li><label class="b">ip：</label> <span><input type="text"
 						name="ip" id="ip" /></span></li>
 				<li><label class="b">&nbsp;</label> <span> <input type="button"
-						id="post" value="提交" onclick="do_post();" />
+						id="post" value="提交" onclick="save();" />
 				</span></li>
 		</form>
 	</div>
 	<script type="text/javascript">
-	/*IP验证*/
-	var errmsg = "";
-	ye._ip2 = function(id){
-		var d = ye.g(id).value;
-		if(d==''){
-			errmsg = '不能为空';
-			return false;
-		}
-		else{
-			if(!ye._ip(id)){
-				errmsg = '格式错误';
-				return false;
+		/*IP验证*/
+		var errmsg = "";
+		ye.extend({
+			ip2 :  function(id){
+				var d = ye.g(id).value;
+				if(d==''){
+					errmsg = '不能为空';
+					return false;
+				}
+				else{
+					if(!ye._ip(id)){
+						errmsg = '格式错误';
+						return false;
+					}
+					else{
+						return true;
+					}
+				}			
 			}
-			else{
-				return true;
-			}
-		}			
-	};
+		})
 	
-		function do_post() {
+		function save() {
 			ye.check({
 				'username' : [ 'require', '不能为空', '&nbsp;' ],
 				'password' : [ 'require', '不能为空', '&nbsp;' ],
