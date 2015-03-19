@@ -1,7 +1,7 @@
-/**
- * 表单验证控件 0.5
- * @author joleye
- * https://github.com/joleye/ye.check
+/*
+ *    表单验证控件 0.5
+ *    @author joleye
+ *    https://github.com/joleye/ye.check
  */
  
 if(!ye)
@@ -283,6 +283,28 @@ ye.do_post = function(option){
 	}
 };
 
+/**
+ * 按照指定规则test
+ * @option : [{
+		            		value : id,
+		            		rule : 'int',
+		            		correct : '正确',
+		            		warning : '字段ID必须'
+		            }]
+ */
+ye.test = function(option){
+	var ret = true;
+	for(var i=0;i<option.length;i++){
+        func = '_'+option[i].rule; 
+        if(!ye[func](null,option[i].value)){
+            alert(option[i].warning);
+		    ret = false;
+            break;
+        }
+	}
+	return ret;
+}
+
 ye._task_key  = function(k){
 	if(ye.isEmpty(k))
 		return;
@@ -398,22 +420,18 @@ ye.do_keyup = function(option){
 };
 
 /*手机号码验证*/
-ye._mobile = function(id){
-	 if(id=='') return false;
-		var d = ye.g(id).value;
-		return /^1\d{10}$/.test(d);
+ye._mobile = function(id,val){
+	return /^1\d{10}$/.test(val);
 };
 
 /*电子邮件验证*/
-ye._email = function(id){
-		var d = ye.g(id).value;
-		return /^(\w|\d|_|\-|\.){1,20}@(\w|\d|-)+\.(com|cn|net|gov\.cn|com\.cn|net\.cn)$/.test(d);
+ye._email = function(id,val){
+	return /^(\w|\d|_|\-|\.){1,20}@(\w|\d|-)+\.(com|cn|net|gov\.cn|com\.cn|net\.cn)$/.test(val);
 };
 
 /*日期格式验证*/
-ye._date = function(id){
-	var d = ye.g(id).value;	
-	return /^\d{4}\-\d{1,2}-\d{1,2}$/.test(d);
+ye._date = function(id,val){
+	return /^\d{4}\-\d{1,2}-\d{1,2}$/.test(val);
 };
 
 /*必填字段*/
@@ -423,9 +441,8 @@ ye._require = function(id,val){
 };
 
 /*必填字段 默认为0情况*/
-ye._require0 = function(id){
-	var d = ye.g(id).value;
-	return d=='0' ? false : true;
+ye._require0 = function(id,val){
+	return val=='0' ? false : true;
 };
 
 /*性别*/
@@ -446,33 +463,31 @@ ye._radio = function(id){
 };
 
 /*数字*/
-ye._int = function(id){
-	var d = ye.g(id) && ye.g(id).value;
-	return /^\d+$/.test(d);
+ye._int = function(id,val){
+	if(typeof val == 'undefined'){
+		val = ye.g(id).value;
+	}
+	return /^\d+$/.test(val);
 };
 
 /*price*/
-ye._price = function(id){
-	var d = ye.g(id).value;
-	return /^(\d|\.)+$/.test(d);
+ye._price = function(id,val){
+	return /^(\d|\.)+$/.test(val);
 };
 
 /*电话*/
-ye._phone = function(id){
-	var d = ye.g(id).value;
-	return /(^\d{11}$)|(^\d{3,5}\-\d{7,8}$)|(^\d{3,5}\-\d{7,8}\-\d{4}$)/.test(d);
+ye._phone = function(id,val){
+	return /(^\d{11}$)|(^\d{3,5}\-\d{7,8}$)|(^\d{3,5}\-\d{7,8}\-\d{4}$)/.test(val);
 };
 
 /*手机*/
-ye._mobile = function(id){
-	var d = ye.g(id).value;
-	return /^\d{11}$/.test(d);
+ye._mobile = function(id,val){
+	return /^\d{11}$/.test(val);
 };
 
 /*身份证号*/
-ye._idcard = function(id){
-	var d = ye.g(id).value;
-	return /^[\dx]{15,18}$/.test(d);
+ye._idcard = function(id,val){
+	return /^[\dx]{15,18}$/.test(val);
 };
 
 /*年龄*/
@@ -481,22 +496,24 @@ ye._idcard = function(id){
  *  agestart:开始年龄
  *  ageend:结束年龄
  */
-ye._age = function(id){
+ye._age = function(id,val){
 	var d = ye.g(id);
 	var checkconf = ye.getAttr(d,'check-conf');	
 	eval('var cdataconf='+checkconf);
 	
-	if(d.value >cdataconf.agestart && d.value <= cdataconf.ageend)
+	if(val >cdataconf.agestart && val <= cdataconf.ageend)
 		return true;
 	else
 		return false;
 };
 
 /*IP验证*/
-ye._ip = function(id){
-	var ip = ye.g(id).value;
+ye._ip = function(id,val){
+	if(typeof val == 'undefined'){
+		val = ye.g(id).value;
+	}
 	var ipRegex = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
-	return ipRegex.test(ip);
+	return ipRegex.test(val);
 };
 
 /*空值验证*/
