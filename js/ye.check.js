@@ -168,6 +168,7 @@
 
 	/*默认提交事件配置*/
 	var _DEFAULT_POST_OPTION = {
+			url : null, //default form action
 			method : 'ajax',
 			msg : {
 				right : 'dright',
@@ -259,8 +260,7 @@
 				if(ye.g(option.btn.name).nodeName.toUpperCase()=='BUTTON'){
 					option.btn.original = jbtn.html();
 					jbtn.html(option.btn.text);
-				}
-				else{
+				}else{
 					option.btn.original = jbtn.val();
 					jbtn.val(option.btn.text);
 				}
@@ -276,7 +276,7 @@
 				subdom = option.form;
 			
 			if(option.method == 'ajax'){
-				var action = $(subdom).attr('action');
+				var action = option.url ? option.url : $(subdom).attr('action');
 				if(action==null || action=='')
 					action = location.href;
 				$.post(action,$(subdom).serialize(),function(env){
