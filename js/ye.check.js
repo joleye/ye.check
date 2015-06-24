@@ -88,7 +88,7 @@
 
 	/*设置对象属性*/
 	ye.setAttr = function(d,key,data){
-		if(typeof data=='undefined'){
+		if(typeof data == 'undefined'){
 			for(var k in key){
 				var k1 = ye._NAME_ATTR(k);
 				d.setAttribute(k1,key[k]);
@@ -515,7 +515,7 @@
 	 */
 	ye._age = function(id,val){
 		var d = ye.g(id);
-		var checkconf = ye.getAttr(d,'check-conf');	
+		var checkconf = ye.getAttr(d,'check-conf');
 		eval('var cdataconf='+checkconf);
 		
 		if(val >cdataconf.agestart && val <= cdataconf.ageend)
