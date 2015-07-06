@@ -252,6 +252,7 @@
 			if(f) err = true;
 		}
 		if(err){
+			option.errorCallback && option.errorCallback();
 			alert('信息填写格式错误或不完整，请检查红色标记部分');
 		}
 		else{
