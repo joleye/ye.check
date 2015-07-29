@@ -319,12 +319,12 @@ ye._task_key  = function(k){
 	if(ret==2){
 		return ;
 	}else if(ret){
-		d.innerHTML = val2;
+		$(d).html(val2);
 		$(d).removeClass(option.msg.error).addClass(option.msg.right);
 		ye.css(ye.g(k),{'borderColor':'','backgroundColor':''});
 		return;
 	}else{
-		d.innerHTML = val1;
+		$(d).html(val1);
 		$(d).removeClass(option.msg.right).addClass(option.msg.error);
 		ye.css(ye.g(k),{'borderColor':'#f00',
 			'backgroundColor':'#FFCCCC'
