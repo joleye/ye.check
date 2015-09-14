@@ -256,7 +256,7 @@
 			alert('信息填写格式错误或不完整，请检查红色标记部分');
 		}
 		else{
-			if(typeof option.btn!='undefined'){
+			if(typeof option.btn != 'undefined' && ye.g(option.btn.name)){
 				var jbtn = $(ye.g(option.btn.name));
 				if(ye.g(option.btn.name).nodeName.toUpperCase()=='BUTTON'){
 					option.btn.original = jbtn.html();
@@ -281,11 +281,13 @@
 				if(action==null || action=='')
 					action = location.href;
 				$.post(action,$(subdom).serialize(),function(env){
-					ye.g(option.btn.name).disabled = false;
-					if(ye.g(option.btn.name).nodeName.toUpperCase()=='BUTTON')
-						ye.g(option.btn.name).innerHTML = option.btn.original;
-					else
-						ye.g(option.btn.name).value = option.btn.original;
+					if(ye.g(option.btn.name)){
+						ye.g(option.btn.name).disabled = false;
+						if(ye.g(option.btn.name).nodeName.toUpperCase()=='BUTTON')
+							ye.g(option.btn.name).innerHTML = option.btn.original;
+						else
+							ye.g(option.btn.name).value = option.btn.original;
+					}
 					option.success && option.success.call(this,env);
 				}).fail(function(xhr){
 					option.failed && option.failed.call(this,xhr);
