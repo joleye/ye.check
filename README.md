@@ -126,8 +126,6 @@ ye.check({
 
 
 ###文件说明
-```
-demo.html 演示文档
-demo-verify.html 规则写在文本框中的属性演示 
-```
+>demo.html 演示文档
+>demo-verify.html 规则写在文本框中的属性演示 
 
