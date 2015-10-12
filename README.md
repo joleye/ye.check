@@ -11,8 +11,8 @@ ye.check
 
 说明：需要jQuery库
 
-方法说明
-===
+###方法说明
+
 ```js
 ye.verify('.form1').do_post({
 	method : 'ajax', //默认 ajax模式提交 ajax/post
@@ -30,9 +30,7 @@ ye.verify('.form1').do_post({
 });
 ```
 
-枚举方式验证
----
-
+#####枚举方式验证
 ```js
 ye.check({
 				'username' : [ 'require', '不能为空', '&nbsp;' ],
@@ -56,9 +54,7 @@ ye.check({
 			});
 ```
 
-寄存验证
----
-
+#####寄存验证
 ```js
 		ye.verify('#form1').do_post({
 			method : 'ajax',//默认 ajax模式提交
@@ -82,8 +78,7 @@ ye.check({
 		});
 ```
 
-默认验证方法列表
-===
+###默认验证方法列表
 >mobile 11位的手机号码
 >email 电子邮件地址 如 : testmail@gmail.com
 >date 日期格式验证 如 : 2015-1-1
@@ -99,8 +94,7 @@ ye.check({
 >ip ip地址
 >null 是否为空 undefined, null ,''
 
-验证方法扩展
-===
+###验证方法扩展
 ```js
 	/*IP验证*/
 		var errmsg = "";
@@ -127,13 +121,11 @@ ye.check({
 >验证使用
 >var rule = {'ip' : [ 'ip2', '@errmsg', '&nbsp;' ]}
 
-操作符号说明
-===
+###操作符号说明
 >var rule = {'ip' : [ 'ip|null', '正确', '只能填写ip地址或者为空' ]}
 
 
-文件说明
-==
+###文件说明
 ```
 demo.html 演示文档
 demo-verify.html 规则写在文本框中的属性演示 
