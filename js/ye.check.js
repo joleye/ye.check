@@ -500,11 +500,6 @@
 		return /(^\d{11}$)|(^\d{3,5}\-\d{7,8}$)|(^\d{3,5}\-\d{7,8}\-\d{4}$)/.test(val);
 	};
 
-	/*手机*/
-	ye._mobile = function(id,val){
-		return /^\d{11}$/.test(val);
-	};
-
 	/*身份证号*/
 	ye._idcard = function(id,val){
 		return /^[\dx]{15,18}$/.test(val);
