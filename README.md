@@ -78,7 +78,7 @@ ye.check({
 		});
 ```
 
-###默认验证方法列表
+#####默认验证方法列表
 >mobile 11位的手机号码
 
 >email 电子邮件地址 如 : testmail@gmail.com
@@ -107,7 +107,7 @@ ye.check({
 
 >null 是否为空 undefined, null ,''
 
-###验证方法扩展
+#####验证方法扩展
 ```js
 	/*IP验证*/
 		var errmsg = "";
@@ -134,11 +134,11 @@ ye.check({
 >验证使用
 >var rule = {'ip' : [ 'ip2', '@errmsg', '&nbsp;' ]}
 
-###操作符号说明
+#####操作符号说明
 >var rule = {'ip' : [ 'ip|null', '正确', '只能填写ip地址或者为空' ]}
 
 
-###文件说明
+#####文件说明
 >demo.html 演示文档
 
 >demo-verify.html 规则写在文本框中的属性演示 
