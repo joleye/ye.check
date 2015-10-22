@@ -80,18 +80,31 @@ ye.check({
 
 ###默认验证方法列表
 >mobile 11位的手机号码
+
 >email 电子邮件地址 如 : testmail@gmail.com
+
 >date 日期格式验证 如 : 2015-1-1
+
 >require 必填字段
+
 >require0 必填字段 默认为0情况
+
 >sex 性别
+
 >radio 单选, 必选 根据name读取多个值
+
 >int 整数, 数字
+
 >price 价格 如: 5.10
+
 >phone 电话号码 如: 11位手机号, 3-5位带区号的座机, 或带4位分机
+
 >idcard 身份证号码, 15或18位
+
 >age 年龄, 需要属性配置 check-conf="{agestart : 6, ageend : 18}"
+
 >ip ip地址
+
 >null 是否为空 undefined, null ,''
 
 ###验证方法扩展
@@ -127,5 +140,6 @@ ye.check({
 
 ###文件说明
 >demo.html 演示文档
+
 >demo-verify.html 规则写在文本框中的属性演示 
 
