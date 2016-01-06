@@ -55,7 +55,7 @@
 
 	/*对象是否为空*/
 	ye.isEmpty = function(arg){
-		if(typeof arg == 'undefined' || arg=='' || arg == null)
+		if(typeof arg == 'undefined' || arg == '' || arg == null)
 			return true;
 		else
 			return false;
