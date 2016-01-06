@@ -79,6 +79,10 @@ ye.check({
 ```
 
 #####默认验证方法列表
+>eg: <input type="text" name="idcard" check-rule="idcard" check-warning="错误" check-correct="正确" />
+
+>属性说明  check-rule:  规则, check-warning: 错误提示消息 check-correct: 正确提示消息
+
 >mobile 11位的手机号码
 
 >email 电子邮件地址 如 : testmail@gmail.com
