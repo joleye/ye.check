@@ -533,6 +533,6 @@
 
 	/*空值验证*/
 	ye._null = function(id,val){
-		return isEmpty(val);
+		return ye.isEmpty(val);
 	}
 })(ye,$);
