@@ -55,7 +55,7 @@
 
 	/*对象是否为空*/
 	ye.isEmpty = function(arg){
-		if(typeof arg == 'undefined' || arg=='' || arg == null)
+		if(typeof arg == 'undefined' || arg == '' || arg == null)
 			return true;
 		else
 			return false;
@@ -88,7 +88,7 @@
 
 	/*设置对象属性*/
 	ye.setAttr = function(d,key,data){
-		if(typeof data=='undefined'){
+		if(typeof data == 'undefined'){
 			for(var k in key){
 				var k1 = ye._NAME_ATTR(k);
 				d.setAttribute(k1,key[k]);
@@ -252,10 +252,11 @@
 			if(f) err = true;
 		}
 		if(err){
+			option.errorCallback && option.errorCallback();
 			alert('信息填写格式错误或不完整，请检查红色标记部分');
 		}
 		else{
-			if(typeof option.btn!='undefined'){
+			if(typeof option.btn != 'undefined' && ye.g(option.btn.name)){
 				var jbtn = $(ye.g(option.btn.name));
 				if(ye.g(option.btn.name).nodeName.toUpperCase()=='BUTTON'){
 					option.btn.original = jbtn.html();
@@ -280,11 +281,13 @@
 				if(action==null || action=='')
 					action = location.href;
 				$.post(action,$(subdom).serialize(),function(env){
-					ye.g(option.btn.name).disabled = false;
-					if(ye.g(option.btn.name).nodeName.toUpperCase()=='BUTTON')
-						ye.g(option.btn.name).innerHTML = option.btn.original;
-					else
-						ye.g(option.btn.name).value = option.btn.original;
+					if(ye.g(option.btn.name)){
+						ye.g(option.btn.name).disabled = false;
+						if(ye.g(option.btn.name).nodeName.toUpperCase()=='BUTTON')
+							ye.g(option.btn.name).innerHTML = option.btn.original;
+						else
+							ye.g(option.btn.name).value = option.btn.original;
+					}
 					option.success && option.success.call(this,env);
 				}).fail(function(xhr){
 					option.failed && option.failed.call(this,xhr);
@@ -497,11 +500,6 @@
 		return /(^\d{11}$)|(^\d{3,5}\-\d{7,8}$)|(^\d{3,5}\-\d{7,8}\-\d{4}$)/.test(val);
 	};
 
-	/*手机*/
-	ye._mobile = function(id,val){
-		return /^\d{11}$/.test(val);
-	};
-
 	/*身份证号*/
 	ye._idcard = function(id,val){
 		return /^[\dx]{15,18}$/.test(val);
@@ -515,7 +513,7 @@
 	 */
 	ye._age = function(id,val){
 		var d = ye.g(id);
-		var checkconf = ye.getAttr(d,'check-conf');	
+		var checkconf = ye.getAttr(d,'check-conf');
 		eval('var cdataconf='+checkconf);
 		
 		if(val >cdataconf.agestart && val <= cdataconf.ageend)
@@ -535,6 +533,6 @@
 
 	/*空值验证*/
 	ye._null = function(id,val){
-		return isEmpty(val);
+		return ye.isEmpty(val);
 	}
 })(ye,$);
