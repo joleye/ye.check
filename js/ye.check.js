@@ -256,6 +256,10 @@
 			alert('信息填写格式错误或不完整，请检查红色标记部分');
 		}
 		else{
+			if(option.beforeCallback){
+				if(!option.beforeCallback())
+					return false;
+			}
 			if(typeof option.btn != 'undefined' && ye.g(option.btn.name)){
 				var jbtn = $(ye.g(option.btn.name));
 				if(ye.g(option.btn.name).nodeName.toUpperCase()=='BUTTON'){

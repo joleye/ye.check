@@ -74,6 +74,9 @@ ye.check({
 			},
 			errorCallback : function(){ //验证错误回调
 				alert('验证信息出错了');
+			},
+			beforeCallback : function(){ //提交表单前触发
+				return true;
 			}
 		});
 ```
