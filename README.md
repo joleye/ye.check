@@ -39,7 +39,7 @@ ye.check({
 				'idcard' : [ 'idcard', '不能为空', '&nbsp;' ],
 				'sex' : [ 'radio', '不能为空', '&nbsp;' ],
 				'age' : [ 'age', '年龄格式错误', '&nbsp;' ],
-				'ip' : [ 'ip2', '@errmsg', '&nbsp;' ],
+				'ip' : [ 'ip2', '@errmsg', '&nbsp;' ]
 				//'ip' : [ 'require', 'ip格式错误', '&nbsp;' ],
 			}).do_post({
 				msg : {

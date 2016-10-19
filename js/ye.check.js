@@ -3,7 +3,7 @@
  *    @author joleye
  *    https://github.com/joleye/ye.check
  */
-
+var __tag;
  if(!ye)
 	var ye,JoleYe = ye = {};
  
@@ -180,8 +180,50 @@
 			}
 	};
 
+	ye.check = function(c, id){
+		return new ye.fn(id, c, false);
+	};
+
+	/*全自动托管*/
+	ye.verify = function(id,option){
+		return new ye.fn(id, option, true);
+	};
+	
+	ye.fn = function(id,option,def){
+		if(def){
+			var c = this.get_def_rule(id);
+			var nc = $.extend(c,option);
+		}else{
+			var nc = option;
+		}
+		var _dom = $(id)[0];
+		return this.init(nc,_dom);
+	};
+
+	ye.fn.prototype.init = function(c,dom){
+		console.log(this.tag);
+		
+		this.conf = c;
+		this._dom = dom;
+		return this;
+	};
+
+	ye.fn.prototype.do_validate = function(option){
+		var conf = this.conf;
+		var err = false;
+		this._option = option;
+		for(var k in conf){
+			var f = this._task_key(k);
+			if(f) err = true;
+		}
+		if(err){
+			alert('信息填写格式错误或不完整，请检查红色标记部分');return false;
+		}
+		return true;
+	};
+	
 	/*读取默认的规则*/
-	ye.get_def_rule = function (form) {
+	ye.fn.prototype.get_def_rule = function (form) {
 	    var rule = {};
 	    $(form).find('input,textarea,select').each(function () {
 	        var id = this.id;
@@ -205,42 +247,8 @@
 	    return rule;
 	};
 
-	ye.check = function(c,id){
-		if ( window == this ) return new ye.check(d,id);
-		var _dom = ye.g(id);
-		return this.init(c,_dom);
-	};
-
-	/*全自动托管*/
-	ye.verify = function(id,option){
-		var c = this.get_def_rule(id);
-		var nc = $.extend(c,option);
-		var _dom = $(id)[0];
-		return this.init(nc,_dom);
-	};
-
-	ye.init = function(c,dom){
-		this.conf = c;
-		this._dom = dom;
-		return this;
-	};
-
-	ye.do_validate = function(option){
-		var conf = this.conf;
-		var err = false;
-		this._option = option;
-		for(var k in conf){
-			var f = this._task_key(k);
-			if(f) err = true;
-		}
-		if(err){
-			alert('信息填写格式错误或不完整，请检查红色标记部分');return false;
-		}
-		return true;
-	};
-
 	/*新验证提交*/
-	ye.do_post = function(options){
+	ye.fn.prototype.do_post = function(options){
 		var conf = this.conf;
 		var err = false;
 
@@ -329,7 +337,7 @@
 		return ret;
 	}
 
-	ye._task_key  = function(k){
+	ye.fn.prototype._task_key  = function(k){
 		if(ye.isEmpty(k))
 			return;
 		
@@ -395,7 +403,7 @@
 	};
 
 	/*格式化key*/
-	ye._format_key = function(k){
+	ye.fn.prototype._format_key = function(k){
 		if(/\[name\=\w+\]/.test(k)){
 			return /\[name=\w+\]/.exec(k)[0].replace('[name=','').replace(']','');
 		}else
@@ -403,7 +411,7 @@
 	};
 
 	/*在开头字母为@的时候当变量处理*/
-	ye._task_var = function(k){
+	ye.fn.prototype._task_var = function(k){
 		if(typeof k!='undefined' && k.indexOf('@')==0){
 			var val = k.substring(1);
 			var ret = "";
@@ -414,27 +422,29 @@
 			return k;
 	};
 
-	ye._do_blur = function(d){
-		ye._task_key(d);
+	ye.fn.prototype._do_blur = function(d){
+		this._task_key(d);
 	};
 
 	/*焦点移开验证*/
-	ye.do_blur = function(option){
+	ye.fn.prototype.do_blur = function(option){
 		this._option = option;
+		var slef = this;
 		for(var k in this.conf){
 			if(this.conf[k][0]=='radio'){
 				$('input[name='+k+']').on('blur',function(){
 					ye._do_blur(this.id);
 				});
 			}else{
-				ye.g(k).onblur = function(){
-					ye._do_blur(this.id);
-				};	
+				$('#'+k).on('blur', function(){
+					slef._do_blur(this.id);
+				});
 			}
 		}
+		return this;
 	};
 
-	ye.do_keyup = function(option){
+	ye.fn.prototype.do_keyup = function(option){
 		this._option = option;
 		for(var k in this.conf){
 			ye.g(k).onkeyup = function(){//绑定onkeyup函数
