@@ -3,7 +3,6 @@
  *    @author joleye
  *    https://github.com/joleye/ye.check
  */
-var __tag;
  if(!ye)
 	var ye,JoleYe = ye = {};
  
@@ -201,8 +200,6 @@ var __tag;
 	};
 
 	ye.fn.prototype.init = function(c,dom){
-		console.log(this.tag);
-		
 		this.conf = c;
 		this._dom = dom;
 		return this;
