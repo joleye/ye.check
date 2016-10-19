@@ -25,6 +25,7 @@ ye.verify('.form1').do_post({
 				text : 'load...' //等待文字
 	},
 	errorCallback : function(){}, //验证消息出错回调方法
+	beforeCallback : function(){},//验证表单成功, 提交表单前触发, return true提交 return false中断 
 	success : function(res){}, //提交成功后调用 res 返回对象
 	failed : function(xhr){} //提交失败后调用 如:400 , 500错误
 });
