@@ -164,6 +164,15 @@
 		
 		return _NAME[key] || key;
 	};
+	
+	/*检查规则是否有效*/
+	ye.option_isvalid = function(param){
+		if(typeof param == 'object' && param.length == 4 && param[3] == false){
+			return false;
+		}else{
+			return true;
+		}
+	}
 
 	/*默认提交事件配置*/
 	var _DEFAULT_POST_OPTION = {
@@ -179,8 +188,8 @@
 			}
 	};
 
-	ye.check = function(c, id){
-		return new ye.fn(id, c, false);
+	ye.check = function(option, id){
+		return new ye.fn(id, option, false);
 	};
 
 	/*全自动托管*/
@@ -204,14 +213,20 @@
 		this._dom = dom;
 		return this;
 	};
+	
+	ye.fn.prototype.setOption = function(callback){
+		this.conf = callback(this.conf)
+	};
 
 	ye.fn.prototype.do_validate = function(option){
 		var conf = this.conf;
 		var err = false;
 		this._option = option;
 		for(var k in conf){
-			var f = this._task_key(k);
-			if(f) err = true;
+			if(ye.option_isvalid(conf[k])){
+				var f = this._task_key(k);
+				if(f) err = true;
+			}
 		}
 		if(err){
 			alert('信息填写格式错误或不完整，请检查红色标记部分');return false;
@@ -253,8 +268,10 @@
 		var option = this._option = $.extend(_DEFAULT_POST_OPTION,options);
 		
 		for(var k in conf){
-			var f = this._task_key(k);
-			if(f) err = true;
+			if(ye.option_isvalid(conf[k])){
+				var f = this._task_key(k);
+				if(f) err = true;
+			}
 		}
 		if(err){
 			option.errorCallback && option.errorCallback();
@@ -310,6 +327,7 @@
 				subdom.submit();
 			}
 		}
+		return this;
 	};
 
 	/**
@@ -339,6 +357,10 @@
 			return;
 		
 		var val = this.conf[k];
+		
+		if(!ye.option_isvalid(val)){
+			return;
+		}
 		
 		//兼容easyui问题
 		var ret = false;
@@ -424,18 +446,21 @@
 	};
 
 	/*焦点移开验证*/
-	ye.fn.prototype.do_blur = function(option){
-		this._option = option;
+	ye.fn.prototype.do_blur = function(options){
+		//默认配置
+		this._option = $.extend(_DEFAULT_POST_OPTION,options);
 		var slef = this;
 		for(var k in this.conf){
-			if(this.conf[k][0]=='radio'){
-				$('input[name='+k+']').on('blur',function(){
-					ye._do_blur(this.id);
-				});
-			}else{
-				$('#'+k).on('blur', function(){
-					slef._do_blur(this.id);
-				});
+			if(ye.option_isvalid(this.conf[k])){
+				if(this.conf[k][0]=='radio'){
+					$('input[name='+k+']').on('blur',function(){
+						ye._do_blur(this.id);
+					});
+				}else{
+					$('#'+k).on('blur', function(){
+						slef._do_blur(this.id);
+					});
+				}
 			}
 		}
 		return this;
@@ -444,12 +469,15 @@
 	ye.fn.prototype.do_keyup = function(option){
 		this._option = option;
 		for(var k in this.conf){
-			ye.g(k).onkeyup = function(){//绑定onkeyup函数
-				ye._do_blur(this.id);
-			};
+			if(ye.option_isvalid(this.conf[k])){
+				ye.g(k).onkeyup = function(){//绑定onkeyup函数
+					ye._do_blur(this.id);
+				};
+			}
 		}
+		return this;
 	};
-
+	
 	/*手机号码验证*/
 	ye._mobile = function(id,val){
 		return /^1\d{10}$/.test(val);

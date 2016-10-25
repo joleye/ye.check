@@ -41,7 +41,7 @@ ye.check({
 				'sex' : [ 'radio', '不能为空', '&nbsp;' ],
 				'age' : [ 'age', '年龄格式错误', '&nbsp;' ],
 				'ip' : [ 'ip2', '@errmsg', '&nbsp;' ]
-				//'ip' : [ 'require', 'ip格式错误', '&nbsp;' ],
+				//'ip' : [ 'require', 'ip格式错误', '&nbsp;'],
 			}).do_post({
 				msg : {
 					right : 'dright',
@@ -150,4 +150,6 @@ ye.check({
 >demo.html 演示文档
 
 >demo-verify.html 规则写在文本框中的属性演示 
+
+>demo2.html 组合验证示例
 
