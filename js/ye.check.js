@@ -364,12 +364,14 @@
 		
 		//兼容easyui问题
 		var ret = false;
+		var tar_val = null;
 		if(val[0] && $('#'+k).hasClass('combo-f')){
 			var _jd = $(this._dom).find('*[name='+k+']');
 			var k2 = _jd[0];
-			ret = ye['_'+val[0]](k2,_jd.val());
+			tar_val = _jd.val();
+			ret = ye['_'+val[0]](k2, tar_val);
 		}else if(val[0]){
-			var tar_val = $('#'+k).length>0?$('#'+k).val():$(k).val();
+			tar_val = $('#'+k).length>0?$('#'+k).val():$(k).val();
 			
 			var funs = val[0].split('|');
 			for(var i=0;i<funs.length;i++){
@@ -402,8 +404,8 @@
 			d = ye.g(k+'_msg');
 		}
 		
-		var val2 = this._task_var(val[2]);
-		var val1 = this._task_var(val[1]);
+		var val2 = this._task_var(val[2], 2, k, val[0], tar_val);
+		var val1 = this._task_var(val[1], 1, k, val[0], tar_val);
 		if(ret==2){
 			return ;
 		}else if(ret){
@@ -430,15 +432,17 @@
 	};
 
 	/*在开头字母为@的时候当变量处理*/
-	ye.fn.prototype._task_var = function(k){
-		if(typeof k!='undefined' && k.indexOf('@')==0){
+	ye.fn.prototype._task_var = function(k, index, id, rule, val){
+		if(typeof k == 'function'){
+			return k(index, id, rule, val);
+		}else if(typeof k!='undefined' && k.indexOf('@')==0){
 			var val = k.substring(1);
 			var ret = "";
 			eval('ret='+val);
 			return ret;
-		}
-		else
+		}else{
 			return k;
+		}
 	};
 
 	ye.fn.prototype._do_blur = function(d){

@@ -72,19 +72,33 @@ span {
 					}
 				}			
 			}
-		})
-	
-		function save() {
-			ye.check({
+		});
+
+		function correct_func(index, id, rule, val){
+			if(index == 1){
+				return '错误';
+			}else if(index == 2){
+				return '正确';
+			}
+		}
+
+		var option = {
 				'username' : [ 'require', '不能为空', '&nbsp;' ],
 				'password' : [ 'require', '不能为空', '&nbsp;' ],
 				'mobile' : [ 'mobile', '不能为空', '&nbsp;' ],
 				'idcard' : [ 'idcard', '不能为空', '&nbsp;' ],
 				'sex' : [ 'radio', '不能为空', '&nbsp;' ],
 				'age' : [ 'age', '年龄格式错误', '&nbsp;' ],
-				'ip' : [ 'ip2', '@errmsg', '&nbsp;' ],
-				//'ip' : [ 'require', 'ip格式错误', '&nbsp;' ],
-			}).do_post({
+				//'ip' : [ 'ip2', '@errmsg', '&nbsp;' ],
+				'ip' : [ 'require', correct_func, correct_func],
+		};
+
+		var chk1 = ye.check(option);
+
+		chk1.do_blur();
+
+		function save() {
+			chk1.do_post({
 				msg : {
 					right : 'dright',
 					error : 'derr'
