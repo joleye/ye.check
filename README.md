@@ -40,8 +40,9 @@ ye.check({
 				'idcard' : [ 'idcard', '不能为空', '&nbsp;' ],
 				'sex' : [ 'radio', '不能为空', '&nbsp;' ],
 				'age' : [ 'age', '年龄格式错误', '&nbsp;' ],
-				'ip' : [ 'ip2', '@errmsg', '&nbsp;' ]
+				'ip' : [ 'ip2', '@errmsg', '&nbsp;' ],
 				//'ip' : [ 'require', 'ip格式错误', '&nbsp;'],
+				'ip' : [ 'require', correct_func, correct_func] //支持自定义消息
 			}).do_post({
 				msg : {
 					right : 'dright',
@@ -53,6 +54,14 @@ ye.check({
 					text : 'load...'
 				}
 			});
+
+			function correct_func(index, id, rule, val){
+				if(index == 1){
+					return '错误';
+				}else if(index == 2){
+					return '正确';
+				}
+			}
 ```
 
 #####寄存验证
