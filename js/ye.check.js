@@ -7,6 +7,20 @@
 	var ye,JoleYe = ye = {};
  
 (function(ye,$){
+	/*默认提交事件配置*/
+	var _DEFAULT_POST_OPTION = {
+			url : null, //default form action
+			method : 'ajax',
+			msg : {
+				right : 'dright',
+				error : 'derr'
+			},
+			btn : {
+				name : '#post',
+				text : 'load...'
+			}
+	};
+	
 	ye.browser = {};
 	if (/msie (\d+\.\d)/i.test(navigator.userAgent)) {
 	    //IE 8下，以documentMode为准
@@ -173,20 +187,6 @@
 			return true;
 		}
 	}
-
-	/*默认提交事件配置*/
-	var _DEFAULT_POST_OPTION = {
-			url : null, //default form action
-			method : 'ajax',
-			msg : {
-				right : 'dright',
-				error : 'derr'
-			},
-			btn : {
-				name : '#post',
-				text : 'load...'
-			}
-	};
 
 	ye.check = function(option, id){
 		return new ye.fn(id, option, false);
@@ -364,15 +364,19 @@
 		
 		//兼容easyui问题
 		var ret = false;
+		//目标值
 		var tar_val = null;
+		//当前对象
+		var self = null;
 		if(val[0] && $('#'+k).hasClass('combo-f')){
-			var _jd = $(this._dom).find('*[name='+k+']');
-			var k2 = _jd[0];
-			tar_val = _jd.val();
-			ret = ye['_'+val[0]](k2, tar_val);
+			self = $(this._dom).find('*[name='+k+']');
+			var k2_dom = self[0];
+			tar_val = self.val();
+			var rule = val[0];//匹配规则
+			ret = ye['_'+rule](k2_dom, tar_val);
 		}else if(val[0]){
-			tar_val = $('#'+k).length>0?$('#'+k).val():$(k).val();
-			
+			self = $('#'+k).length > 0 ? $('#'+k) : $(k);
+			tar_val = self.val();
 			var funs = val[0].split('|');
 			for(var i=0;i<funs.length;i++){
 				if(ret = ye['_'+funs[i]](k,tar_val))
@@ -381,11 +385,13 @@
 		}
 		
 		var option = this._option;
+		var msg_id = this._format_key(k)+'_msg';
+		var d = ye.g(msg_id);
+		var show_label = /^false$/.test(self.attr('check-show-label')) ? false : true;
 		
-		var d = ye.g(this._format_key(k)+'_msg');
-		if(!d){
+		if(!d && show_label){
 			var cd = ye.create("label");
-			cd.id = k+'_msg';
+			cd.id = msg_id;
 			$(cd).addClass('control-label').addClass('text-left');//bootstrap css
 			var msgdom;
 			if(ye.g(k))
@@ -401,7 +407,7 @@
 				msgdom.parentNode.appendChild(cd);
 			}
 			
-			d = ye.g(k+'_msg');
+			d = ye.g(msg_id);
 		}
 		
 		var val2 = this._task_var(val[2], 2, k, val[0], tar_val);
@@ -409,12 +415,12 @@
 		if(ret==2){
 			return ;
 		}else if(ret){
-			d.innerHTML = val2;
+			$(d).html(val2);
 			$(d).removeClass(option.msg.error).addClass(option.msg.right);
 			ye.css(ye.g(k),{'borderColor':'','backgroundColor':''});
 			return;
 		}else{
-			d.innerHTML = val1;
+			$(d).html(val1);
 			$(d).removeClass(option.msg.right).addClass(option.msg.error);
 			ye.css(ye.g(k),{'borderColor':'#f00',
 				'backgroundColor':'#FFCCCC'

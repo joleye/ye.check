@@ -32,6 +32,7 @@ ye.verify('.form1').do_post({
 ```
 
 #####枚举方式验证
+> arg1:规则,arg2:错误提示,arg3:正确提示,arg4:是否必须,默认必须
 ```js
 ye.check({
 				'username' : [ 'require', '不能为空', '&nbsp;' ],
@@ -92,9 +93,9 @@ ye.check({
 ```
 
 #####默认验证方法列表
->eg: <input type="text" name="idcard" check-rule="idcard" check-warning="错误" check-correct="正确" />
+>eg: <input type="text" name="idcard" check-rule="idcard" check-warning="错误" check-correct="正确" check-show-label="true"/>
 
->属性说明  check-rule:  规则, check-warning: 错误提示消息 check-correct: 正确提示消息
+>属性说明  check-rule:  规则, check-warning: 错误提示消息 check-correct: 正确提示消息, check-show-label: 错误提示标签是否显示
 
 >mobile 11位的手机号码
 
