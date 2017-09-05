@@ -11,7 +11,7 @@ ye.check
 
 说明：需要jQuery库
 
-演示：[http://joleye.github.io/ye.check/demo-verify.html][1]
+演示：http://joleye.github.io/ye.check/demo-verify.html
 
 ###方法说明
 
