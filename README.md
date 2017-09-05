@@ -11,7 +11,7 @@ ye.check
 
 说明：需要jQuery库
 
-演示：[demo](http://joleye.github.io/ye.check/demo-verify.html?_blank) 
+演示：[http://joleye.github.io/ye.check/demo-verify.html](http://joleye.github.io/ye.check/demo-verify.html){:target="_blank"} 
 
 ###方法说明
 
