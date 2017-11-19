@@ -154,6 +154,7 @@ ye.check({
 
 #####操作符号说明
 >var rule = {'ip' : [ 'ip|null', '正确', '只能填写ip地址或者为空' ]}
+>var rule = {'ip' : [ 'require&int', '正确', '只能填写ip地址或者为空' ]}
 
 
 #####文件说明
