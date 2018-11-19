@@ -71,6 +71,8 @@ ye.check({
 ```js
 		ye.verify('#form1').do_post({
 			method : 'ajax',//默认 ajax模式提交
+			dataType : 'json',//可选
+			contentType : 'application/json;charset=UTF-8',//可选
 			msg : {
 				right : 'dright',
 				error : 'derr'

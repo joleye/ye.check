@@ -308,17 +308,26 @@ if (!ye)
                 var action = option.url ? option.url : $(subdom).attr('action');
                 if (action == null || action == '')
                     action = location.href;
-                $.post(action, $(subdom).serialize(), function (env) {
-                    if (ye.g(option.btn.name)) {
-                        ye.g(option.btn.name).disabled = false;
-                        if (ye.g(option.btn.name).nodeName.toUpperCase() == 'BUTTON')
-                            ye.g(option.btn.name).innerHTML = option.btn.original;
-                        else
-                            ye.g(option.btn.name).value = option.btn.original;
+
+                $.ajax({
+                    type: "POST",
+                    url: action,
+                    data: option.dataType == 'json' ? this.serializeObject($(subdom)) : $(subdom).serialize(),
+                    dataType: option.dataType || '',
+                    contentType: option.contentType,
+                    success: function (env) {
+                        if (ye.g(option.btn.name)) {
+                            ye.g(option.btn.name).disabled = false;
+                            if (ye.g(option.btn.name).nodeName.toUpperCase() == 'BUTTON')
+                                ye.g(option.btn.name).innerHTML = option.btn.original;
+                            else
+                                ye.g(option.btn.name).value = option.btn.original;
+                        }
+                        option.success && option.success.call(this, env);
+                    },
+                    fail: function (xhr) {
+                        option.failed && option.failed.call(this, xhr);
                     }
-                    option.success && option.success.call(this, env);
-                }).fail(function (xhr) {
-                    option.failed && option.failed.call(this, xhr);
                 });
             }
             else {
@@ -330,6 +339,20 @@ if (!ye)
             }
         }
         return this;
+    };
+
+    ye.fn.prototype.serializeObject = function ($jquery) {
+        var a, o, h, i, e;
+        a = $jquery.serializeArray();
+        o = {};
+        h = o.hasOwnProperty;
+        for (i = 0; i < a.length; i++) {
+            e = a[i];
+            if (!h.call(o, e.name)) {
+                o[e.name] = e.value;
+            }
+        }
+        return JSON.stringify(o);
     };
 
     /**
@@ -390,7 +413,7 @@ if (!ye)
                 for (var i = 0; i < funs.length; i++) {
                     var tmp_ret = false;
                     ret = ye['_' + funs[i]](k, tar_val);
-                    if (!ret){
+                    if (!ret) {
                         break;
                     }
                 }
@@ -567,7 +590,7 @@ if (!ye)
 
     /*身份证号*/
     ye._idcard = function (id, val) {
-        return /^[\dx]{15,18}$/.test(val);
+        return /^[\dxX]{15,18}$/.test(val);
     };
 
     /*年龄*/
