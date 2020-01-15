@@ -181,7 +181,7 @@ if (!ye)
     };
 
     /*检查规则是否有效*/
-    ye.option_isvalid = function (param) {
+    ye.option_valid = function (param) {
         if (typeof param == 'object' && param.length == 4 && param[3] == false) {
             return false;
         } else {
@@ -224,7 +224,7 @@ if (!ye)
         var err = false;
         this._option = option;
         for (var k in conf) {
-            if (ye.option_isvalid(conf[k])) {
+            if (ye.option_valid(conf[k])) {
                 var f = this._task_key(k);
                 if (f) err = true;
             }
@@ -270,7 +270,7 @@ if (!ye)
         var option = this._option = $.extend(_DEFAULT_POST_OPTION, options);
 
         for (var k in conf) {
-            if (ye.option_isvalid(conf[k])) {
+            if (ye.option_valid(conf[k])) {
                 var f = this._task_key(k);
                 if (f) err = true;
             }
@@ -383,7 +383,7 @@ if (!ye)
 
         var val = this.conf[k];
 
-        if (!ye.option_isvalid(val)) {
+        if (!ye.option_valid(val)) {
             return;
         }
 
@@ -500,7 +500,7 @@ if (!ye)
         this._option = $.extend(_DEFAULT_POST_OPTION, options);
         var slef = this;
         for (var k in this.conf) {
-            if (ye.option_isvalid(this.conf[k])) {
+            if (ye.option_valid(this.conf[k])) {
                 if (this.conf[k][0] == 'radio') {
                     $('input[name=' + k + ']').on('blur', function () {
                         ye._do_blur(this.id);
@@ -518,7 +518,7 @@ if (!ye)
     ye.fn.prototype.do_keyup = function (option) {
         this._option = option;
         for (var k in this.conf) {
-            if (ye.option_isvalid(this.conf[k])) {
+            if (ye.option_valid(this.conf[k])) {
                 ye.g(k).onkeyup = function () {//绑定onkeyup函数
                     ye._do_blur(this.id);
                 };
@@ -580,7 +580,7 @@ if (!ye)
 
     /*price*/
     ye._price = function (id, val) {
-        return /^(\d|\.)+$/.test(val);
+        return /^(\d|\.|\-)+$/.test(val);
     };
 
     /*电话*/
