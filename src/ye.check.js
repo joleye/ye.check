@@ -316,13 +316,15 @@ if (!ye)
                     dataType: option.dataType || '',
                     contentType: option.contentType,
                     success: function (env) {
-                        if (ye.g(option.btn.name)) {
-                            ye.g(option.btn.name).disabled = false;
-                            if (ye.g(option.btn.name).nodeName.toUpperCase() == 'BUTTON')
-                                ye.g(option.btn.name).innerHTML = option.btn.original;
-                            else
-                                ye.g(option.btn.name).value = option.btn.original;
-                        }
+                        setTimeout(function () {
+                            if (ye.g(option.btn.name)) {
+                                ye.g(option.btn.name).disabled = false;
+                                if (ye.g(option.btn.name).nodeName.toUpperCase() == 'BUTTON')
+                                    ye.g(option.btn.name).innerHTML = option.btn.original;
+                                else
+                                    ye.g(option.btn.name).value = option.btn.original;
+                            }
+                        }, 1200);
                         option.success && option.success.call(this, env);
                     },
                     fail: function (xhr) {
