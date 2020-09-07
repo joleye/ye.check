@@ -266,13 +266,15 @@ if (!ye)
         //默认配置
         var option = this._option = $.extend(_DEFAULT_POST_OPTION, options);
 
-        for (var k in conf) {
-            if (ye.option_valid(conf[k])) {
-                var f = this._task_key(k);
-                if (f) err = true;
+        if (option.validate) {
+            for (var k in conf) {
+                if (ye.option_valid(conf[k])) {
+                    var f = this._task_key(k);
+                    if (f) err = true;
+                }
             }
         }
-        if (option.validate && err) {
+        if (err) {
             option.errorCallback && option.errorCallback();
             alert('信息填写格式错误或不完整，请检查红色标记部分');
         } else {
