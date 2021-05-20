@@ -11,6 +11,7 @@ if (!ye)
     var _DEFAULT_POST_OPTION = {
         url: null, //default form action
         method: 'ajax',
+        validate: true,
         msg: {
             right: 'dright',
             error: 'derr'
@@ -36,15 +37,14 @@ if (!ye)
     };
 
     ye.find = function (seltext) {
-        if (typeof(seltext) == 'string') {
+        if (typeof (seltext) == 'string') {
             if (/^(#)(\w|_|-)/.test(seltext)) {
                 this._d = document.getElementById(seltext.substring(1));
             } else if (/^\.[\w_\-]+$|\[/.test(seltext)) {
                 this._d = $(seltext)[0];
             } else
                 this._d = document.getElementById(seltext);
-        }
-        else
+        } else
             this._d = seltext;
 
         return this;
@@ -112,17 +112,15 @@ if (!ye)
             if (d) {
                 key = ye._NAME_ATTR(key);
                 if (/INPUT|FORM/.test(d.nodeName)) {
-                    if (typeof(d.getAttribute(key)) == 'object') {
+                    if (typeof (d.getAttribute(key)) == 'object') {
                         var dom = d.attributes[key];
                         if (dom)
                             d.attributes(key).value = data;
                         else
                             d.setAttribute(key, data);
-                    }
-                    else
+                    } else
                         d.setAttribute(key, data);
-                }
-                else
+                } else
                     d.setAttribute(key, data);
             }
         }
@@ -135,14 +133,13 @@ if (!ye)
         key = ye._NAME_ATTR(key);
 
         if (/INPUT|FORM/.test(d.nodeName))
-            if (typeof(d.getAttribute(key)) == 'object') {
+            if (typeof (d.getAttribute(key)) == 'object') {
                 var dom = d.attributes[key];
                 if (dom)
                     return d.attributes[key].value;
                 else
                     return d.getAttribute(key);
-            }
-            else
+            } else
                 return d.getAttribute(key);
         else
             return d.getAttribute(key);
@@ -269,17 +266,18 @@ if (!ye)
         //默认配置
         var option = this._option = $.extend(_DEFAULT_POST_OPTION, options);
 
-        for (var k in conf) {
-            if (ye.option_valid(conf[k])) {
-                var f = this._task_key(k);
-                if (f) err = true;
+        if (option.validate) {
+            for (var k in conf) {
+                if (ye.option_valid(conf[k])) {
+                    var f = this._task_key(k);
+                    if (f) err = true;
+                }
             }
         }
         if (err) {
             option.errorCallback && option.errorCallback();
             alert('信息填写格式错误或不完整，请检查红色标记部分');
-        }
-        else {
+        } else {
             if (option.beforeCallback) {
                 if (!option.beforeCallback())
                     return false;
@@ -331,8 +329,7 @@ if (!ye)
                         option.failed && option.failed.call(this, xhr);
                     }
                 });
-            }
-            else {
+            } else {
                 if (option.success) {
                     option.success.apply(this);
                 }
