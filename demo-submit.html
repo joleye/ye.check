@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>demo-verify</title>
+<link rel="stylesheet" type="text/css" href="css/ye.check.css" />
+<script type="text/javascript" src="src/jquery.js"></script>
+<script type="text/javascript" src="src/ye.check.js"></script>
+<style type="text/css">
+#form1 li {
+	height: 45px;
+	list-style: none;
+}
+
+.b {
+	width: 30%;
+	display: block;
+	text-align: right;
+	float: left;
+}
+
+span {
+	display: inline-block;
+	text-align: left;
+	float: left;
+}
+</style>
+</head>
+<body>
+	<div>
+		<form method="post" id="form1">
+			<ul>
+				<li><label class="b">用户名：</label> <span><input type="text"
+						name="username" check-rule="require" check-warning="错误" check-correct="正确" /></span></li>
+				<li><label class="b">密码：</label> <span><input type="password"
+						name="password" check-rule="require" check-warning="错误" check-correct="正确" /></span></li>
+				<li><label class="b">手机号码：</label> <span><input type="text"
+						name="mobile" check-rule="mobile" check-warning="错误" check-correct="正确" /></span></li>
+				<li><label class="b">身份证号码：</label> <span><input type="text"
+						name="idcard" check-rule="idcard" check-warning="错误" check-correct="正确" check-show-label="true"/></span></li>
+				<li><label class="b">性别：</label> <span> <input type="radio"
+						name="sex" rule="radio" check-rule="radio" check-warning="错误" check-correct="正确"/>男 <input type="radio" name="sex"
+						check-rule="radio" check-warning="错误" check-correct="正确" />女
+				</span></li>
+				<li><label class="b">年龄：</label> <span><input type="text"	name="age" check-rule="age" check-warning="错误" check-correct="正确" check-conf="{agestart:18,ageend:60}" /></span></li>
+				<li><label class="b">ip：</label> <span><input type="text" name="ip" check-rule="custom" check-warning="@warning" check-correct="@correct" /></span></li>
+				<li><label class="b">&nbsp;</label> <span> <input type="submit" id="post" value="提交" />
+				</span>
+                </li>
+            </ul>
+		</form>
+	</div>
+	<script type="text/javascript">
+	/*扩展新验证*/
+	var warning = "";
+	var correct = "";
+	ye.extend({
+		custom : function(id,val){
+			if(val==''){
+				warning = '不能为空';
+				return false;
+			}else{
+				if(!ye._ip(id)){
+					warning = '格式错误';
+					return false;
+				}else{
+					correct = "正确"
+					return true;
+				}
+			}
+		}
+	});
+
+    //自动托管
+    ye.verify('#form1').submit({
+        method : 'ajax',//默认 ajax模式提交
+        msg : {
+            right : 'dright',
+            error : 'derr'
+        },
+        btn : {
+            name : '#post',
+            text : 'load...'
+        },
+        success : function(res){ //成功回调
+            alert(res);
+        },
+        failed : function(xhr){ //错误回调 , 500错误等
+            alert(xhr);
+        },
+        errorCallback : function(){ //验证错误回调
+            alert('验证信息出错了');
+        },
+        beforeCallback : function(){ //提交表单前触发
+            return true;
+        }
+    });
+	</script>
+</body>
+</html>

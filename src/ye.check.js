@@ -1,5 +1,5 @@
-/*
- *    表单验证控件 0.7
+/**
+ *    表单验证控件 0.7.1
  *    @author joleye
  *    https://github.com/joleye/ye.check
  */
@@ -343,6 +343,15 @@ if (!ye)
         return this;
     };
 
+    ye.fn.prototype.submit = function(opt){
+        var that = this;
+        $(this._dom).submit(function (e) {
+            that.do_post(opt);
+            e.stopPropagation();
+            return false;
+        });
+    };
+
     ye.fn.prototype.serializeObject = function ($jquery) {
         var a, o, h, i, e;
         a = $jquery.serializeArray();
@@ -377,7 +386,7 @@ if (!ye)
             }
         }
         return ret;
-    }
+    };
 
     ye.fn.prototype._task_key = function (k) {
         if (ye.isEmpty(k))
