@@ -79,7 +79,8 @@ ye.check({
 			},
 			btn : {
 				name : '#post',
-				text : 'load...'
+				text : 'load...',
+				duplicate: false
 			},
 			success : function(res){ //成功回调
 				alert(res);

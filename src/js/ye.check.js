@@ -1,5 +1,5 @@
 /**
- *    表单验证控件 0.7.1
+ *    表单验证控件 0.7.2
  *    @author joleye
  *    https://github.com/joleye/ye.check
  */
@@ -18,7 +18,8 @@ if (!ye)
         },
         btn: {
             name: '#post',
-            text: 'load...'
+            text: 'load...',
+            duplicate: true
         }
     };
 
@@ -72,7 +73,7 @@ if (!ye)
             return true;
         else
             return false;
-    }
+    };
 
     /*取当前下一个内容*/
     ye.next = function (val) {
@@ -316,7 +317,9 @@ if (!ye)
                     success: function (env) {
                         setTimeout(function () {
                             if (ye.g(option.btn.name)) {
-                                ye.g(option.btn.name).disabled = false;
+                                if (option.btn.duplicate) {
+                                    ye.g(option.btn.name).disabled = false;
+                                }
                                 if (ye.g(option.btn.name).nodeName.toUpperCase() == 'BUTTON')
                                     ye.g(option.btn.name).innerHTML = option.btn.original;
                                 else
@@ -340,7 +343,7 @@ if (!ye)
         return this;
     };
 
-    ye.fn.prototype.submit = function(opt){
+    ye.fn.prototype.submit = function (opt) {
         var that = this;
         $(this._dom).submit(function (e) {
             that.do_post(opt);
