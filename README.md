@@ -24,7 +24,8 @@ ye.verify('.form1').do_post({
 	},
 	btn : {
 				name : '#post',//确定按钮名称 jquery筛选器
-				text : 'load...' //等待文字
+				text : 'load...', //等待文字
+				duplicate: true, //允许重复提交
 	},
 	errorCallback : function(){}, //验证消息出错回调方法
 	beforeCallback : function(){},//验证表单成功, 提交表单前触发, return true提交 return false中断 

@@ -259,13 +259,28 @@ if (!ye)
         return rule;
     };
 
+    ye.assign = function (target, source) {
+        for (var key in source) {
+            if (key.hasOwnProperty) {
+                if (target[key] && typeof target[key] === 'object') {
+                    target[key] = this.assign(target[key], source[key]);
+                } else {
+                    target[key] = source[key];
+                }
+            }
+        }
+        return target;
+    };
+
     /*新验证提交*/
     ye.fn.prototype.do_post = function (options) {
         var conf = this.conf;
         var err = false;
 
         //默认配置
-        var option = this._option = $.extend(_DEFAULT_POST_OPTION, options);
+        var option = ye.assign(_DEFAULT_POST_OPTION, options);
+
+        this._option = option;
 
         if (option.validate) {
             for (var k in conf) {
