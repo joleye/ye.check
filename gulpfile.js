@@ -27,12 +27,12 @@ gulp.task('html',function(){
         minifyJS:true,//压缩html中的javascript代码。
         minifyCSS:true //压缩html中的css代码。
     };
-    return gulp.src('./src/*.html')
+    return gulp.src('./src/html/*.html')
         .pipe(htmlmin(options))
         .pipe(revCollector({
             replaceReved:true
         }))
-        .pipe(gulp.dest('./dist'))
+        .pipe(gulp.dest('./dist/html'))
         .pipe(connect.reload());
 });
 // 压缩js
@@ -67,18 +67,18 @@ gulp.task('style', ()=>{
 // 压缩images
 gulp.task('images', ()=>{
     return gulp
-        .src(['./src/img/**/*.jpg', './src/img/**/*.gif', './src/img/**/*.png'])
+        .src(['./src/images/**/*.jpg', './src/images/**/*.gif', './src/images/**/*.png'])
         .pipe(imagemin([
             imagemin.gifsicle({interlaced: true}),
             imagemin.jpegtran({propressive: true}),
             imagemin.optipng({optimizationLevel: 5})
         ]))
-        .pipe(gulp.dest('./dist/img/'));
+        .pipe(gulp.dest('./dist/images/'));
 });
 gulp.task('watchs',function(){
-    gulp.watch('./src/*.html', gulp.series('html'));
-    gulp.watch('./src/css/**/*.css', gulp.series('style'));
-    gulp.watch('./src/js/**/*.js', gulp.series('js'));
+    gulp.watch('./src/html/*.html', gulp.series('html'));
+    gulp.watch('./src/**/*.css', gulp.series('style'));
+    gulp.watch('./src/**/*.js', gulp.series('js'));
 });
 gulp.task('connect:app',function(){
     connect.server({
