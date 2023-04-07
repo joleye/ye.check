@@ -555,7 +555,7 @@ if (!ye)
 
     /*手机号码验证*/
     ye._mobile = function (id, val) {
-        return /^1\d{10}$/.test(val);
+        return /^1\d{10}$/.test(val) || /^00852\d{8}$/.test(val) || /^852\d{8}$/.test(val);;
     };
 
     /*电子邮件验证*/
